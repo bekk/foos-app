@@ -8,3 +8,25 @@
   padding: 10px;
   margin: 10px;
 }
+
+.buttonAlign {
+  display: flex;
+  position: flex-start;
+}
+
+.buttonAlign button {
+  padding: 10px;
+  margin: 10px;
+  width: 180px;
+  height: 50px;
+}
+
+.whitePlayerButton {
+  background-color: white;
+  border: 1px solid black;
+}
+
+.bluePlayerButton {
+  background-color: rgb(20, 128, 216);
+  border: 1px solid black;
+}

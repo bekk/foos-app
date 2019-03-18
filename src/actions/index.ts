@@ -14,7 +14,13 @@ export interface AddPlayer {
   type: "ADD_PLAYER";
   player: IPlayer;
 }
-export type FoosAction = WhiteScore | BlueScore | AddPlayer;
+
+export interface RemovePlayer {
+  type: "REMOVE_PLAYER";
+  player: IPlayer;
+}
+
+export type FoosAction = WhiteScore | BlueScore | AddPlayer | RemovePlayer;
 
 export function whiteScore(score: number): WhiteScore {
   return {
@@ -22,15 +28,24 @@ export function whiteScore(score: number): WhiteScore {
     score
   };
 }
+
 export function blueScore(score: number): BlueScore {
   return {
     type: "BLUE_SCORE",
     score
   };
 }
+
 export function addPlayer(player: IPlayer): AddPlayer {
   return {
     type: "ADD_PLAYER",
+    player
+  };
+}
+
+export function removePlayer(player: IPlayer): RemovePlayer {
+  return {
+    type: "REMOVE_PLAYER",
     player
   };
 }

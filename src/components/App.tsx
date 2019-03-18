@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import "./App.css";
 import { Player } from "./Player";
+import { SelectedPlayers } from "./SelectedPlayers";
 
 interface IPropsFromState {
   teamWhite: ITeam;
@@ -16,6 +17,7 @@ interface IPropsWithDispatch {
   onWhiteScore: (score: number) => void;
   onBlueScore: (score: number) => void;
   onAddPlayer: (player: IPlayer) => void;
+  onRemovePlayer: (player: IPlayer) => void;
 }
 
 type Props = IPropsFromState & IPropsWithDispatch;
@@ -25,7 +27,7 @@ class AppComponent extends React.Component<Props, {}> {
     super(props);
   }
   render() {
-    const { teamWhite, teamBlue, players, onAddPlayer } = this.props;
+    const { teamWhite, teamBlue, players, onAddPlayer, onRemovePlayer } = this.props;
     return (
       <div>
         <h1>Foos-app</h1>
@@ -34,16 +36,12 @@ class AppComponent extends React.Component<Props, {}> {
             <Player player={player} onAddPlayer={onAddPlayer} />
           ))}
         </div>
-        <div>
-          <h3>White Team</h3>
-          <span>
-            {teamWhite.player1} {teamWhite.player2}
-          </span>
-          <h3>Blue Team</h3>
-          <span>
-            {teamBlue.player1} {teamBlue.player2}
-          </span>
-        </div>
+        <SelectedPlayers
+          teamWhite={teamWhite}
+          teamBlue={teamBlue}
+          players={players}
+          onRemovePlayer={onRemovePlayer}
+        />
       </div>
     );
   }
@@ -63,7 +61,8 @@ export function mapDispatchToProps(
   return {
     onWhiteScore: score => dispatch(actions.whiteScore(score)),
     onBlueScore: score => dispatch(actions.blueScore(score)),
-    onAddPlayer: player => dispatch(actions.addPlayer(player))
+    onAddPlayer: player => dispatch(actions.addPlayer(player)),
+    onRemovePlayer: player => dispatch(actions.removePlayer(player))
   };
 }
 

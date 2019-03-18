@@ -1,6 +1,5 @@
 export interface ITeam {
-  player1: IPlayer;
-  player2: IPlayer;
+  players: IPlayer[];
   score: number;
 }
 

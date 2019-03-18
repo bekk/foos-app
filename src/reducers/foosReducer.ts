@@ -1,5 +1,5 @@
-import { IFoosState, IPlayer } from "../types/interfaces";
-import { FoosAction } from "../actions/index";
+import { IFoosState, IPlayer, ITeam } from "../types/interfaces";
+import { FoosAction, AddPlayer, RemovePlayer } from "../actions/index";
 
 const initialState: IFoosState = {
   players: [
@@ -10,16 +10,53 @@ const initialState: IFoosState = {
     "modasdddaman5"
   ],
   teamWhite: {
-    player1: "",
-    player2: "",
+    players: [],
     score: 0
   },
   teamBlue: {
-    player1: "",
-    player2: "",
+    players: [],
     score: 0
   }
 };
+
+function addPlayer(state: IFoosState, action: AddPlayer) {
+  const remainingPlayers = state.players.filter(x => x !== action.player);
+  if (state.teamWhite.players.length < 2) {
+    return {
+      ...state,
+      teamWhite: {
+        ...state.teamWhite,
+        players: [...state.teamWhite.players, action.player]
+      },
+      players: remainingPlayers
+    };
+  } else if (state.teamBlue.players.length < 2) {
+    return {
+      ...state,
+      teamBlue: {
+        ...state.teamBlue,
+        players: [...state.teamBlue.players, action.player]
+      },
+      players: remainingPlayers
+    };
+  }
+  return state;
+}
+
+function removePlayer(state: IFoosState, action: RemovePlayer) {
+  return {
+    ...state,
+    teamWhite: {
+      ...state.teamWhite,
+      players: state.teamWhite.players.filter(x => x !== action.player)
+    },
+    teamBlue: {
+      ...state.teamBlue,
+      players: state.teamBlue.players.filter(x => x !== action.player)
+    },
+    players: state.players.concat(action.player)
+  };
+}
 
 export function foosReducer(
   state: IFoosState = initialState,
@@ -37,38 +74,9 @@ export function foosReducer(
         teamBlue: { ...state.teamBlue, score: action.score }
       };
     case "ADD_PLAYER":
-      const chosenPlayers = [
-        state.teamWhite.player1,
-        state.teamWhite.player2,
-        state.teamBlue.player1,
-        state.teamBlue.player2
-      ];
-      if (chosenPlayers.some(x => x === action.player)) {
-        return state;
-      }
-
-      if (!state.teamWhite.player1) {
-        return {
-          ...state,
-          teamWhite: { ...state.teamWhite, player1: action.player }
-        };
-      } else if (!state.teamWhite.player2) {
-        return {
-          ...state,
-          teamWhite: { ...state.teamWhite, player2: action.player }
-        };
-      } else if (!state.teamBlue.player1) {
-        return {
-          ...state,
-          teamBlue: { ...state.teamBlue, player1: action.player }
-        };
-      } else if (!state.teamBlue.player2) {
-        return {
-          ...state,
-          teamBlue: { ...state.teamBlue, player2: action.player }
-        };
-      }
-      return state;
+      return addPlayer(state, action);
+    case "REMOVE_PLAYER":
+      return removePlayer(state, action);
   }
   return state;
 }
