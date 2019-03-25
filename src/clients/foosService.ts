@@ -4,7 +4,7 @@ export async function addMatch(match: IMatchContract) {
   const options = {
     headers: {
       "Content-Type": "application/json",
-      Accept: "applicaiton/json"
+      Accept: "application/json"
     },
     body: JSON.stringify(match),
     method: "POST"
@@ -17,9 +17,23 @@ export async function addMatch(match: IMatchContract) {
 export async function getPlayers() {
   const options = {
     headers: {
-      "Content-Type": "applicaiton/json"
+      "Content-Type": "application/json"
     },
     method: "get"
+  };
+  const url = `http://localhost:5000/api/Players`;
+  const response = await fetch(url, options);
+  return response.json() as Promise<Array<IPlayerId>>;
+}
+
+export async function addNewPlayer(player: IPlayerId) {
+  const options = {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    },
+    body: JSON.stringify(player),
+    method: "POST"
   };
   const url = `http://localhost:5000/api/Players`;
   const response = await fetch(url, options);

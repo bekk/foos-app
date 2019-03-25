@@ -25,14 +25,28 @@ export interface GetALLPlayers {
   players: IPlayer[];
 }
 
+export interface ResetState {
+  type: "RESET_STATE";
+}
 
+export interface WriteUserName {
+  type: "WRITE_USER_NAME";
+  userName: string;
+}
 
+export interface WriteUserId {
+  type: "WRITE_USER_ID";
+  id: number;
+}
 export type FoosAction =
   | WhiteScore
   | BlueScore
   | AddPlayer
   | RemovePlayer
-  | GetALLPlayers;
+  | GetALLPlayers
+  | ResetState
+  | WriteUserName
+  | WriteUserId;
 
 export function whiteScore(score: number): WhiteScore {
   return {
@@ -66,5 +80,25 @@ export function getAllPlayers(players: IPlayer[]): GetALLPlayers {
   return {
     type: "GET_ALL_PLAYERS",
     players
+  };
+}
+
+export function ResetState(): ResetState {
+  return {
+    type: "RESET_STATE"
+  };
+}
+
+export function WriteUserName(userName: string): WriteUserName {
+  return {
+    type: "WRITE_USER_NAME",
+    userName
+  };
+}
+
+export function WriteUserId(id: number): WriteUserId {
+  return {
+    type: "WRITE_USER_ID",
+    id
   };
 }

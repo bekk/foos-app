@@ -1,120 +1,44 @@
 import * as React from "react";
-import * as actions from "../actions/index";
-import {
-  StoreState,
-  ITeam,
-  IPlayer,
-  IMatchContract
-} from "../types/interfaces";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import "./App.css";
-import { Player } from "./Player";
-import { SelectedPlayers } from "./SelectedPlayers";
-import { addMatch, getPlayers } from "../clients/foosService";
-import { foosReducer } from "../reducers/foosReducer";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Main } from "./Main";
+import { Users } from "./Users";
 
-interface IPropsFromState {
-  teamWhite: ITeam;
-  teamBlue: ITeam;
-  players: IPlayer[];
+function Index() {
+  return <h2>Matches</h2>;
 }
 
-interface IPropsWithDispatch {
-  onWhiteScore: (score: number) => void;
-  onBlueScore: (score: number) => void;
-  onAddPlayer: (player: IPlayer) => void;
-  onRemovePlayer: (player: IPlayer) => void;
-  onGetAllPlayers: (players: IPlayer[]) => void;
+function Userss() {
+  return <h2>Opprett bruker</h2>;
 }
 
-type Props = IPropsFromState & IPropsWithDispatch;
-
-function createMatch(teamWhite: ITeam, teamBlue: ITeam): IMatchContract {
-  return {
-    WhiteTeam: { Players: teamWhite.players, Score: teamWhite.score },
-    BlueTeam: { Players: teamBlue.players, Score: teamBlue.score }
-  };
+function Ranking() {
+  return <h2>Ranking</h2>;
 }
 
-class AppComponent extends React.Component<Props, {}> {
-  constructor(props: Props) {
-    super(props);
-  }
-
-  componentDidMount() {
-    this.loadPlayers();
-  }
-
-  loadPlayers = async () => {
-    const allPlayers = await getPlayers();
-    const allPlayerNames = allPlayers.map(x => x.name);
-    this.props.onGetAllPlayers(allPlayerNames);
-  };
-
-  save = async () => {
-    const writeModel = createMatch(this.props.teamWhite, this.props.teamBlue);
-    const viewModel = await addMatch(writeModel);
-    
-  };
-
-  render() {
-    const {
-      teamWhite,
-      teamBlue,
-      players,
-      onAddPlayer,
-      onRemovePlayer,
-      onBlueScore,
-      onWhiteScore
-    } = this.props;
-    return (
+function App() {
+  return (
+    <Router>
       <div>
-        <h1>Spillere</h1>
-        <div className="positionPlayerButtons">
-          {players.map(player => (
-            <Player player={player} onAddPlayer={onAddPlayer} />
-          ))}
-        </div>
-        <SelectedPlayers
-          teamWhite={teamWhite}
-          teamBlue={teamBlue}
-          players={players}
-          onRemovePlayer={onRemovePlayer}
-          onBlueScore={onBlueScore}
-          onWhiteScore={onWhiteScore}
-        />
-        <div>
-          <button className="lagreButton" onClick={this.save}>
-            Lagre Match!
-          </button>
-        </div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Matches</Link>
+            </li>
+            <li>
+              <Link to="/users/">Opprett bruker</Link>
+            </li>
+            <li>
+              <Link to="/ranking/">Ranking</Link>
+            </li>
+          </ul>
+        </nav>
+        <Route path="/" exact component={Main} />
+        <Route path="/users/" component={Users} />
+        <Route path="/raning/" component={Ranking} />
       </div>
-    );
-  }
+    </Router>
+  );
 }
 
-export function mapStateToProps({ foos }: StoreState): IPropsFromState {
-  return {
-    teamWhite: foos.teamWhite,
-    teamBlue: foos.teamBlue,
-    players: foos.players
-  };
-}
-
-export function mapDispatchToProps(
-  dispatch: Dispatch<actions.FoosAction>
-): IPropsWithDispatch {
-  return {
-    onWhiteScore: score => dispatch(actions.whiteScore(score)),
-    onBlueScore: score => dispatch(actions.blueScore(score)),
-    onAddPlayer: player => dispatch(actions.addPlayer(player)),
-    onRemovePlayer: player => dispatch(actions.removePlayer(player)),
-    onGetAllPlayers: players => dispatch(actions.getAllPlayers(players))
-  };
-}
-
-export const App = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AppComponent);
+export default App;

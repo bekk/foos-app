@@ -12,6 +12,7 @@ export interface IFoosState {
   teamWhite: ITeam;
   teamBlue: ITeam;
   players: IPlayer[];
+  newUser: IPlayerId;
 }
 
 export interface IIndividualScores {
@@ -24,7 +25,7 @@ export type IPlayer = string;
 
 export interface IPlayerId {
   name: IPlayer;
-  employeeId: number;
+  employeeId?: number;
 }
 
 export type StoreState = { foos: IFoosState };

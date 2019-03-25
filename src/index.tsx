@@ -3,8 +3,9 @@ import ReactDOM from "react-dom";
 import { render } from "react-dom";
 import { createStore } from "redux";
 import rootReducer from "./reducers/index";
-import { App } from "./components/App";
+import { Main } from "./components/Main";
 import { Provider } from "react-redux";
+import App from "./components/App";
 
 //import * as serviceWorker from "./serviceWorker";
 

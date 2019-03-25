@@ -10,6 +10,10 @@ const initialState: IFoosState = {
   teamBlue: {
     players: [],
     score: 0
+  },
+  newUser: {
+    name: "",
+    employeeId: 0
   }
 };
 
@@ -78,6 +82,22 @@ export function foosReducer(
       return {
         ...state,
         players: action.players
+      };
+    case "RESET_STATE":
+      return {
+        ...state,
+        teamWhite: initialState.teamWhite,
+        teamBlue: initialState.teamBlue
+      };
+    case "WRITE_USER_NAME":
+      return {
+        ...state,
+        newUser: { ...state.newUser, name: action.userName }
+      };
+    case "WRITE_USER_ID":
+      return {
+        ...state,
+        newUser: { ...state.newUser, employeeId: action.id }
       };
   }
   return state;
