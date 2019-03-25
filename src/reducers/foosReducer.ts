@@ -1,14 +1,8 @@
-import { IFoosState, IPlayer, ITeam } from "../types/interfaces";
+import { IFoosState, IPlayer, ITeam, StoreState } from "../types/interfaces";
 import { FoosAction, AddPlayer, RemovePlayer } from "../actions/index";
 
 const initialState: IFoosState = {
-  players: [
-    "moddaman1",
-    "moddaman2",
-    "moddaman3",
-    "moddamdsaan4",
-    "modasdddaman5"
-  ],
+  players: [],
   teamWhite: {
     players: [],
     score: 0
@@ -44,18 +38,21 @@ function addPlayer(state: IFoosState, action: AddPlayer) {
 }
 
 function removePlayer(state: IFoosState, action: RemovePlayer) {
-  return {
-    ...state,
-    teamWhite: {
-      ...state.teamWhite,
-      players: state.teamWhite.players.filter(x => x !== action.player)
-    },
-    teamBlue: {
-      ...state.teamBlue,
-      players: state.teamBlue.players.filter(x => x !== action.player)
-    },
-    players: state.players.concat(action.player)
-  };
+  if (action.player !== undefined) {
+    return {
+      ...state,
+      teamWhite: {
+        ...state.teamWhite,
+        players: state.teamWhite.players.filter(x => x !== action.player)
+      },
+      teamBlue: {
+        ...state.teamBlue,
+        players: state.teamBlue.players.filter(x => x !== action.player)
+      },
+      players: state.players.concat(action.player)
+    };
+  }
+  return state;
 }
 
 export function foosReducer(
@@ -77,6 +74,11 @@ export function foosReducer(
       return addPlayer(state, action);
     case "REMOVE_PLAYER":
       return removePlayer(state, action);
+    case "GET_ALL_PLAYERS":
+      return {
+        ...state,
+        players: action.players
+      };
   }
   return state;
 }

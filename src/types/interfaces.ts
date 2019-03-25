@@ -3,9 +3,9 @@ export interface ITeam {
   score: number;
 }
 
-interface IMatch {
-  teamWhite: ITeam;
-  teamBlue: ITeam;
+export interface ITeamContract {
+  Players: IPlayer[];
+  Score: number;
 }
 
 export interface IFoosState {
@@ -22,4 +22,14 @@ export interface IIndividualScores {
 
 export type IPlayer = string;
 
+export interface IPlayerId {
+  name: IPlayer;
+  employeeId: number;
+}
+
 export type StoreState = { foos: IFoosState };
+
+export interface IMatchContract {
+  WhiteTeam: ITeamContract;
+  BlueTeam: ITeamContract;
+}

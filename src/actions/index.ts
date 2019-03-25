@@ -1,4 +1,4 @@
-import { IPlayer } from "../types/interfaces";
+import { IPlayer, ITeam } from "../types/interfaces";
 
 export interface WhiteScore {
   type: "WHITE_SCORE";
@@ -17,10 +17,22 @@ export interface AddPlayer {
 
 export interface RemovePlayer {
   type: "REMOVE_PLAYER";
-  player: IPlayer;
+  player?: IPlayer;
 }
 
-export type FoosAction = WhiteScore | BlueScore | AddPlayer | RemovePlayer;
+export interface GetALLPlayers {
+  type: "GET_ALL_PLAYERS";
+  players: IPlayer[];
+}
+
+
+
+export type FoosAction =
+  | WhiteScore
+  | BlueScore
+  | AddPlayer
+  | RemovePlayer
+  | GetALLPlayers;
 
 export function whiteScore(score: number): WhiteScore {
   return {
@@ -47,5 +59,12 @@ export function removePlayer(player: IPlayer): RemovePlayer {
   return {
     type: "REMOVE_PLAYER",
     player
+  };
+}
+
+export function getAllPlayers(players: IPlayer[]): GetALLPlayers {
+  return {
+    type: "GET_ALL_PLAYERS",
+    players
   };
 }
