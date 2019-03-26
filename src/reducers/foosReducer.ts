@@ -13,7 +13,7 @@ const initialState: IFoosState = {
   },
   newUser: {
     name: "",
-    employeeId: 0
+    employeeId: undefined
   }
 };
 
@@ -86,8 +86,10 @@ export function foosReducer(
     case "RESET_STATE":
       return {
         ...state,
+        players: initialState.players,
         teamWhite: initialState.teamWhite,
-        teamBlue: initialState.teamBlue
+        teamBlue: initialState.teamBlue,
+        newUser: initialState.newUser
       };
     case "WRITE_USER_NAME":
       return {

@@ -57,6 +57,7 @@ class MainComponent extends React.Component<Props, {}> {
     const writeModel = createMatch(this.props.teamWhite, this.props.teamBlue);
     const viewModel = await addMatch(writeModel);
     this.props.onResetState();
+    this.loadPlayers();
   };
 
   render() {
@@ -86,9 +87,13 @@ class MainComponent extends React.Component<Props, {}> {
           onWhiteScore={onWhiteScore}
         />
         <div>
-          <button className="lagreButton" onClick={this.save}>
-            Lagre Match!
-          </button>
+          {teamWhite.score && teamBlue.score ? (
+            <button className="lagreButton" onClick={this.save}>
+              Lagre Match!
+            </button>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     );

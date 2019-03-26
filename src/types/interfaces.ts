@@ -34,3 +34,11 @@ export interface IMatchContract {
   WhiteTeam: ITeamContract;
   BlueTeam: ITeamContract;
 }
+
+export interface IResultsContract {
+  matchId: number;
+  date: Date;
+  name: string;
+  isWhite: boolean;
+  score: number;
+}

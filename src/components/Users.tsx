@@ -1,20 +1,11 @@
 import * as React from "react";
 import * as actions from "../actions/index";
-import {
-  StoreState,
-  ITeam,
-  IPlayer,
-  IMatchContract,
-  IPlayerId
-} from "../types/interfaces";
+import { StoreState, IPlayer, IPlayerId } from "../types/interfaces";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import "./App.css";
-import { Player } from "./Player";
-import { SelectedPlayers } from "./SelectedPlayers";
-import { addMatch, getPlayers, addNewPlayer } from "../clients/foosService";
-import { foosReducer } from "../reducers/foosReducer";
-import { on } from "cluster";
+
+import { addNewPlayer } from "../clients/foosService";
 
 interface IPropsFromState {
   players: IPlayer[];
@@ -23,12 +14,13 @@ interface IPropsFromState {
 
 interface IPropsWithDispatch {
   onWriteUserName: (userName: string) => void;
-  onWriteUserId: (id: number) => void;
+  onWriteUserId: (id?: number) => void;
+  onResetState: () => void;
 }
 
 type Props = IPropsFromState & IPropsWithDispatch;
 
-function createUser(name: string, id: number): IPlayerId {
+function createUser(name: string, id?: number): IPlayerId {
   return {
     name: name,
     employeeId: id
@@ -41,32 +33,35 @@ class UserComponent extends React.Component<Props, {}> {
   }
 
   onCreateUser = async () => {
-    const writeModel = this.props.newUser.employeeId
-      ? createUser(this.props.newUser.name, this.props.newUser.employeeId)
-      : createUser(this.props.newUser.name, 0);
+    const viewModel = await addNewPlayer(this.props.newUser);
+    this.props.onResetState();
+  };
 
-    const viewModel = await addNewPlayer(writeModel);
-    console.log(viewModel);
+  onUserIdInput = (value: string) => {
+    const employeeId = value ? parseInt(value) : undefined;
+    this.props.onWriteUserId(employeeId);
   };
 
   render() {
-    const { onWriteUserName, onWriteUserId } = this.props;
+    const { onWriteUserName, newUser } = this.props;
     return (
       <div>
         <h2>Opprett ny bruker</h2>
 
         <input
           type="text"
+          value={newUser.name}
           onChange={event => onWriteUserName(event.target.value)}
           placeholder="Velg brukernavn"
         />
         <input
           type="number"
-          onChange={event => onWriteUserId(parseInt(event.target.value))}
+          value={newUser.employeeId}
+          onChange={event => this.onUserIdInput(event.target.value)}
           placeholder="Skriv ditt ansattnummer"
         />
 
-        <button onClick={this.onCreateUser}>Lagre</button>
+        <button onClick={this.onCreateUser}>Opprett bruker</button>
       </div>
     );
   }
@@ -84,7 +79,8 @@ export function mapDispatchToProps(
 ): IPropsWithDispatch {
   return {
     onWriteUserName: userName => dispatch(actions.WriteUserName(userName)),
-    onWriteUserId: id => dispatch(actions.WriteUserId(id))
+    onWriteUserId: id => dispatch(actions.WriteUserId(id)),
+    onResetState: () => dispatch(actions.ResetState())
   };
 }
 

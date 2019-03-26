@@ -3,18 +3,7 @@ import "./App.css";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { Main } from "./Main";
 import { Users } from "./Users";
-
-function Index() {
-  return <h2>Matches</h2>;
-}
-
-function Userss() {
-  return <h2>Opprett bruker</h2>;
-}
-
-function Ranking() {
-  return <h2>Ranking</h2>;
-}
+import { Ranking } from "./Ranking";
 
 function App() {
   return (
@@ -35,7 +24,7 @@ function App() {
         </nav>
         <Route path="/" exact component={Main} />
         <Route path="/users/" component={Users} />
-        <Route path="/raning/" component={Ranking} />
+        <Route path="/ranking/" component={Ranking} />
       </div>
     </Router>
   );
