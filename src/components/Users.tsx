@@ -14,13 +14,13 @@ interface IPropsFromState {
 
 interface IPropsWithDispatch {
   onWriteUserName: (userName: string) => void;
-  onWriteUserId: (id?: number) => void;
+  onWriteUserId: (id: string) => void;
   onResetState: () => void;
 }
 
 type Props = IPropsFromState & IPropsWithDispatch;
 
-function createUser(name: string, id?: number): IPlayerId {
+function createUser(name: string, id: string): IPlayerId {
   return {
     name: name,
     employeeId: id
@@ -37,31 +37,27 @@ class UserComponent extends React.Component<Props, {}> {
     this.props.onResetState();
   };
 
-  onUserIdInput = (value: string) => {
-    const employeeId = value ? parseInt(value) : undefined;
-    this.props.onWriteUserId(employeeId);
-  };
-
   render() {
-    const { onWriteUserName, newUser } = this.props;
+    const { onWriteUserName, onWriteUserId, newUser } = this.props;
     return (
       <div>
         <h2>Opprett ny bruker</h2>
-
-        <input
-          type="text"
-          value={newUser.name}
-          onChange={event => onWriteUserName(event.target.value)}
-          placeholder="Velg brukernavn"
-        />
-        <input
-          type="number"
-          value={newUser.employeeId}
-          onChange={event => this.onUserIdInput(event.target.value)}
-          placeholder="Skriv ditt ansattnummer"
-        />
-
-        <button onClick={this.onCreateUser}>Opprett bruker</button>
+        <form>
+          <input
+            type="text"
+            value={newUser.name}
+            onChange={event => onWriteUserName(event.target.value)}
+            placeholder="Velg brukernavn"
+            required
+          />
+          <input
+            type="number"
+            value={newUser.employeeId}
+            onChange={event => onWriteUserId(event.target.value)}
+            placeholder="Skriv ditt ansattnummer"
+          />
+          <button onClick={this.onCreateUser}>Opprett bruker</button>
+        </form>
       </div>
     );
   }

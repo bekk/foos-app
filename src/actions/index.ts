@@ -36,7 +36,7 @@ export interface WriteUserName {
 
 export interface WriteUserId {
   type: "WRITE_USER_ID";
-  id?: number;
+  id: string;
 }
 export type FoosAction =
   | WhiteScore
@@ -96,7 +96,7 @@ export function WriteUserName(userName: string): WriteUserName {
   };
 }
 
-export function WriteUserId(id?: number): WriteUserId {
+export function WriteUserId(id: string): WriteUserId {
   return {
     type: "WRITE_USER_ID",
     id

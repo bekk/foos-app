@@ -13,7 +13,7 @@ const initialState: IFoosState = {
   },
   newUser: {
     name: "",
-    employeeId: undefined
+    employeeId: ""
   }
 };
 

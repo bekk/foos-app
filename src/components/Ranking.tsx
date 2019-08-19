@@ -4,7 +4,8 @@ import {
   StoreState,
   ITeam,
   IPlayer,
-  IMatchContract
+  IMatchContract,
+  Iscores
 } from "../types/interfaces";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -29,7 +30,9 @@ interface IPropsWithDispatch {
 
 type Props = IPropsFromState & IPropsWithDispatch;
 
-
+function rankPlayers(scores: Iscores[]) {
+  const length = scores.map(x => ({ name: x.name, x }));
+}
 
 class RankingComponent extends React.Component<Props, {}> {
   constructor(props: Props) {
@@ -42,8 +45,9 @@ class RankingComponent extends React.Component<Props, {}> {
 
   loadResults = async () => {
     const allPlayers = await getResults();
-    const userNames = this.props.players;
+    const userNames = allPlayers.map(x => x.name);
     console.log(userNames);
+
     const groupByPlayer = groupBy(allPlayers, x => x.name);
     console.log(groupByPlayer);
 
@@ -51,8 +55,11 @@ class RankingComponent extends React.Component<Props, {}> {
       name: x,
       score: groupByPlayer[x].map(y => y.score)
     }));
+    const rankedPlayers = rankPlayers(scores);
     console.log(scores);
-  };
+    const x = (rankedPlayers) => rankedPlayers.filter((v,i) => rankedPlayers.indexOf(v) === i)
+
+    };
 
   render() {
     return (

@@ -25,7 +25,7 @@ export type IPlayer = string;
 
 export interface IPlayerId {
   name: IPlayer;
-  employeeId?: number;
+  employeeId: string;
 }
 
 export type StoreState = { foos: IFoosState };
@@ -41,4 +41,9 @@ export interface IResultsContract {
   name: string;
   isWhite: boolean;
   score: number;
+}
+
+export interface Iscores {
+  name: string;
+  score: number[];
 }

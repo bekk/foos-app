@@ -38,3 +38,7 @@ button {
 .lagreButton {
   background-color: rgb(75, 167, 14);
 }
+
+input:invalid {
+  box-shadow: 0 0 5px 1px red;
+}
